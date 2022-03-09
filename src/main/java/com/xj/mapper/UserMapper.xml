@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xj.mapper.UserMapper">
+    <select id="selectByTitle" resultType="com.xj.entity.User">
+        select * from user_test
+        <where>
+            <if test="title != null and title != ''">
+                and title like concat('%',#{title},'%')
+            </if>
+        </where>
+    </select>
+    <select id="selectByQq" resultType="com.xj.entity.User"></select>
+    <select id="selectByProvince" resultType="com.xj.entity.User"></select>
+    <select id="selectByCity" resultType="com.xj.entity.User"></select>
+    <select id="selectByProvinceAndCity" resultType="com.xj.entity.User"></select>
+    <select id="selectByFaceValue" resultType="com.xj.entity.User"></select>
+    <select id="selectByTitlePage" resultType="com.xj.entity.User">
+        select id, title, age, price, project, process, if(qq like '不要选择上门%',null,qq) qq, wechat, if(phone like '本信息未经验证%',null,phone) phone, address, dz, pid, cid, privacy, status, reason, browse, create_time, earn_points, is_ad, author, file, concat('https://6frod.xyz/',if(img='999' or img='',null,img)) img, face_value, view_points, viewlist from user
+        <where>
+            <if test="title != null and title != ''">
+                title like concat('%',#{title},'%')
+            </if>
+            <if test="provinceIds != null and provinceIds.size()>0">
+                <foreach collection="provinceIds" open="and pid in (" close=")" item="pid" separator=",">
+                    #{pid}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <select id="selectByContactPage" resultType="com.xj.entity.User">
+        select id, title, age, price, project, process, if(qq like '不要选择上门%',null,qq) qq, wechat, if(phone like '本信息未经验证%',null,phone) phone, address, dz, pid, cid, privacy, status, reason, browse, create_time, earn_points, is_ad, author, file, concat('https://6frod.xyz/',if(img='999' or img='',null,img)) img, face_value, view_points, viewlist from user
+        <where>
+            <if test="contact != null and contact != ''">
+                (qq like concat('%',#{contact},'%') or wechat like concat('%',#{contact},'%') or phone like concat('%',#{contact},'%'))
+            </if>
+            <if test="provinceIds != null and provinceIds.size()>0">
+                <foreach collection="provinceIds" open="and pid in (" close=")" item="pid" separator=",">
+                    #{pid}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <select id="selectByLocationPage" resultType="com.xj.entity.User">
+        select id, title, age, price, project, process, if(qq like '不要选择上门%',null,qq) qq, wechat, if(phone like '本信息未经验证%',null,phone) phone, address, dz, pid, cid, privacy, status, reason, browse, create_time, earn_points, is_ad, author, file, concat('https://6frod.xyz/',if(img='999' or img='',null,img)) img, face_value, view_points, viewlist from user
+        <where>
+            <if test="location != null and location != ''">
+                (address like concat('%',#{location},'%') or dz like concat('%',#{location},'%'))
+            </if>
+            <if test="provinceIds != null and provinceIds.size()>0">
+                <foreach collection="provinceIds" open="and pid in (" close=")" item="pid" separator=",">
+                    #{pid}
+                </foreach>
+            </if>
+        </where>
+    </select>
+</mapper>
